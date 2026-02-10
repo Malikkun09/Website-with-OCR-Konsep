@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Vision Lite - Optimasi Low-End CPU</title>
+    <!-- Menggunakan Tesseract.js dari CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header>
+    <h1>OCR Vision Lite</h1>
+    <p class="subtitle">Optimasi untuk Proesor Low-End (Gen 11 kebawah)</p>
+</header>
+
+<div class="container">
+    
+    <!-- Kolom Kiri: Input & Kontrol -->
+    <div class="card">
+        <div class="card-header">
+            <span>1. Input & Preprocessing</span>
+        </div>
+
+        <div class="upload-area" id="dropZone">
+            <div class="upload-icon">📁</div>
+            <p>Klik atau Tarik Gambar ke sini</p>
+            <input type="file" id="fileInput" accept="image/*">
+        </div>
+
+        <div class="controls">
+            <div>
+                <label for="langSelect">Bahasa (Language)</label>
+                <select id="langSelect">
+                    <option value="eng">Inggris (Cepat)</option>
+                    <option value="ind" selected>Indonesia</option>
+                    <option value="eng+ind">Inggris + Indonesia</option>
+                    <option value="jpn">Jepang</option>
+                    <option value="ara">Arab</option>
+                </select>
+            </div>
+            <div>
+                <label for="resizeToggle">Optimasi CPU (Downscale)</label>
+                <select id="resizeToggle">
+                    <option value="1200">Normal (Max 1200px)</option>
+                    <option value="800">High Performance (Max 800px)</option>
+                    <option value="0">Asli (Berat - Tidak Disarankan)</option>
+                </select>
+            </div>
+        </div>
+
+        <div>
+            <label>Adjustments (Visual Support)</label>
+            <div class="toggle-wrapper">
+                <input type="checkbox" id="grayscaleCheck"> <label for="grayscaleCheck" style="margin:0">Hitam Putih (Grayscale)</label>
+            </div>
+            <div class="toggle-wrapper">
+                <input type="checkbox" id="binarizeCheck"> <label for="binarizeCheck" style="margin:0">High Contrast (Binarization)</label>
+                <span class="badge">Membantu teks buram</span>
+            </div>
+        </div>
+
+        <button id="processBtn" disabled>
+            <span>⚡ Mulai Proses OCR</span>
+        </button>
+
+        <div class="progress-container" id="progressContainer">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="status-text" id="statusText">Menunggu gambar...</div>
+    </div>
+
+    <!-- Kolom Kanan: Preview & Visualisasi -->
+    <div class="card">
+        <div class="card-header">
+            <span>2. Vision Preview</span>
+            <button class="secondary" id="resetBtn" style="padding: 4px 8px; font-size: 0.8rem;">Reset</button>
+        </div>
+        <div class="preview-container" id="previewContainer">
+            <p style="color: white; font-size: 0.9rem;">Preview Gambar akan muncul di sini</p>
+            <canvas id="imageCanvas" style="display:none;"></canvas>
+        </div>
+        <div style="font-size: 0.8rem; color: #64748b;">
+            * Kotak hijau menunjukkan area teks yang terdeteksi.
+        </div>
+    </div>
+
+    <!-- Bawah: Hasil Teks -->
+    <div class="card full-width">
+        <div class="card-header">
+            <span>3. Hasil Ekstraksi Teks</span>
+            <span id="confidenceScore" style="font-weight:normal; font-size: 0.9rem; color:#64748b;"></span>
+        </div>
+        <textarea id="resultText" placeholder="Hasil teks akan muncul di sini setelah diproses..."></textarea>
+        <div class="result-actions">
+            <button class="secondary" id="copyBtn">Salin ke Clipboard</button>
+        </div>
+    </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
